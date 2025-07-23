@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Videos Horizontales</title>
+  <style>
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .video-container {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+    }
+
+    .video-container iframe {
+      width: 640px;
+      height: 360px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="video-container" id="videos">
+    <!-- Primer video con autoplay -->
+    <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        frameborder="0" allowfullscreen>
+</iframe>
+
+
+    <!-- Los siguientes sin autoplay -->
+    <iframe 
+      src="https://www.youtube.com/watch?v=WtnrpxF68EY" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+
+    <iframe 
+      src="https://www.youtube.com/embed/ID_VIDEO_3" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+
+    <!-- Puedes seguir agregando más iframes -->
+  </div>
+
+  <script>
+    // Movimiento automático cada 5 minutos (300000 milisegundos)
+    let container = document.getElementById("videos");
+    setInterval(() => {
+      container.scrollBy({ left: 650, behavior: 'smooth' });
+    }, 300000); // 5 minutos
+  </script>
+
+</body>
+</html>
