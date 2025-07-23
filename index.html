@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reproducción Secuencial</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      background: black;
+    }
+
+    #player {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="player"></div>
+
+  <script>
+    // Lista de IDs de YouTube (puedes agregar todos los que quieras)
+    const videoIDs = [
+      "EOJhzt3SWhg",
+      "WtnrpxF68EY",
+      "pqTVAXKpASQ",
+      "6S22uGCnOTM",
+      "usGk1AZQ808",
+      "WtnrpxF68EY"
+    ];
+
+    let currentIndex = 0;
+    let player;
+
+    // Cargar la API de YouTube
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    // Cuando la API esté lista
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: videoIDs[currentIndex],
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          showinfo: 0,
+          modestbranding: 1,
+          rel: 0,
+          fs: 0,
+          mute: 1, // El video se reproduce sin sonido automáticamente
+        },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    // Cuando termine un video
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        currentIndex++;
+        if (currentIndex < videoIDs.length) {
+          player.loadVideoById(videoIDs[currentIndex]);
+        } else {
+          currentIndex = 0; // Reiniciar si quieres que repita todo
+          player.loadVideoById(videoIDs[currentIndex]);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
