@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reproducción Secuencial con Audio de Fondo</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: black;
+        }
+
+        #player {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Oculta el elemento de audio para que solo suene */
+        #background-audio {
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="player"></div>
+    
+    <audio id="background-audio" autoplay loop muted>
+        <source src="Audio de WhatsApp 2025-10-24 a las 08.54.34_85515f02.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        // Lista de IDs de YouTube
+        const videoIDs = [
+            "haXbQBBuZWQ", //*MONTANA*/ 
+            "6mq9z8ZYB2g", //*Alfa*/
+            "WtnrpxF68EY", //*sistecredito*/
+            "6S22uGCnOTM", //*Addi market*/
+            "6mq9z8ZYB2g", //*Alfa*/
+            "pqTVAXKpASQ", //*Sika boquilla*/
+            "EOJhzt3SWhg", //*vaca acesco*/
+            "LQcA9R6lsyU", //*sika*/
+            "usGk1AZQ808", //*Ceramica italia*/
+            "6mq9z8ZYB2g", //*Alfa*/
+            "5UymtRC75KA", //*Video StrettoCapsula11 TecnologiaBioSafe*/
+            "nufi_sUvG2Q", //*Lavatorio Marsella*/
+            "ljMQIbXFf9I"  //* ahorro horiontal subtitulos*/
+        ];
+
+        let currentIndex = 0;
+        let player;
+        let backgroundAudio; // Variable para el elemento de audio
+
+        // Cargar la API de YouTube
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+
+        // Cuando la API esté lista
+        function onYouTubeIframeAPIReady() {
+            // Inicializar la variable de audio
+            backgroundAudio = document.getElementById('background-audio');
+            
+            // Intentar reproducir y quitar el 'muted' al inicio (ver nota de 'Permisos')
+            try {
+                // Quitamos el 'muted' y ajustamos el volumen (opcional)
+                backgroundAudio.muted = false; 
+                backgroundAudio.volume = 0.5; // Ajusta el volumen a tu gusto (0.0 a 1.0)
+                backgroundAudio.play();
+            } catch (error) {
+                console.warn("No se pudo iniciar la reproducción automática del audio. Puede requerir interacción del usuario.");
+            }
+
+            player = new YT.Player('player', {
+                videoId: videoIDs[currentIndex],
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    fs: 0,
+                    mute: 1, // Los videos de YouTube siguen silenciados
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // Cuando termine un video
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                currentIndex++;
+                if (currentIndex < videoIDs.length) {
+                    player.loadVideoById(videoIDs[currentIndex]);
+                } else {
+                    currentIndex = 0; // Reiniciar si quieres que repita todo
+                    player.loadVideoById(videoIDs[currentIndex]);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
