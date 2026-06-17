@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reproducción Secuencial - Columna Derecha Semipantalla</title>
+    <title>Reproducción Secuencial - Columna Derecha Semipantalla con Sombra</title>
     <style>
         /* Estilos base para ocupar toda la pantalla */
         html, body {
@@ -30,7 +30,7 @@
             position: absolute;
             top: 3%; 
             right: 2%; /* Alineado al borde derecho */
-            width: 720px; /* ANCHO EXPANDIDO PARA CUBRIR EL ÁREA MARCADA */
+            width: 720px; /* Ancho expandido basado en la imagen */
             height: 94%; 
             z-index: 50; 
             display: flex;
@@ -42,35 +42,40 @@
             box-sizing: border-box;
         }
 
-        /* --- TARJETAS PREMIUM DE GRAN TAMAÑO --- */
+        /* --- TARJETAS PREMIUM CON DOBLE EFECTO DE SOMBRA REFORZADA --- */
         .partido-box {
-            background: #003b8e; /* Azul sólido institucional sin transparencias */
-            border-left: 12px solid #f20018; /* Línea roja gruesa muy llamativa */
+            background: #003b8e; /* Azul sólido institucional */
+            border-left: 12px solid #f20018; /* Línea roja gruesa */
             border-top: 1px solid rgba(255, 255, 255, 0.25); 
             border-right: 1px solid rgba(255, 255, 255, 0.25);
             border-bottom: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 14px;
-            padding: 22px 35px; /* Mayor espacio interno para distribuir el ancho */
+            padding: 22px 35px; 
             color: white;
             flex: 1; 
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: -10px 10px 35px rgba(0, 0, 0, 0.9); /* Sombra profunda */
             box-sizing: border-box;
+            
+            /* === NUEVA SOMBRA TRIPLE MULTICAPA PARA MÁXIMO RELIEVE === */
+            box-shadow: 
+                -15px 15px 30px rgba(0, 0, 0, 0.85),   /* Sombra ambiental profunda hacia la izquierda */
+                -5px 5px 10px rgba(0, 0, 0, 0.9),       /* Sombra de enfoque nítida en los bordes */
+                inset 0px 1px 2px rgba(255, 255, 255, 0.2); /* Brillo interno superior estilo cristal */
         }
 
         /* Encabezado con Fecha y Hora de Alta Legibilidad */
         .partido-header {
             display: flex;
             justify-content: space-between;
-            font-size: 18px; /* Texto de tiempo más visible */
+            font-size: 18px; 
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 16px;
             border-bottom: 3px solid rgba(255, 255, 255, 0.35); 
             padding-bottom: 8px;
-            color: #4bb6e8; /* Celeste brillante */
+            color: #4bb6e8; 
             font-weight: bold;
         }
 
@@ -85,7 +90,7 @@
         .team-block {
             display: flex;
             align-items: center;
-            gap: 24px; /* Espaciado generoso entre bandera y texto */
+            gap: 24px; 
             width: 44%;
         }
 
@@ -95,7 +100,7 @@
 
         /* Banderas de los equipos en tamaño Ultra Grande (XL) */
         .team-logo {
-            width: 96px; /* Ajuste panorámico de banderas */
+            width: 96px; 
             height: 60px; 
             object-fit: cover;
             border-radius: 8px;
@@ -105,7 +110,7 @@
 
         /* Iniciales de los equipos colosales */
         .team-name {
-            font-size: 42px; /* TIPOGRAFÍA GIGANTE PARA TRANSMISIÓN EN VIVO */
+            font-size: 42px; 
             font-weight: 900;
             letter-spacing: 1px;
         }
@@ -162,8 +167,10 @@
 </head>
 <body>
 
+    <!-- WIDGET ANCHO EN COLUMNA VERTICAL CON SOMBRAS DE ALTO IMPACTO -->
     <div class="trujillo-partidos-widget">
         
+        <!-- Partido 1 -->
         <div class="partido-box">
             <div class="partido-header">
                 <span>Martes 16 de Junio</span>
@@ -182,6 +189,7 @@
             </div>
         </div>
 
+        <!-- Partido 2 -->
         <div class="partido-box">
             <div class="partido-header">
                 <span>Martes 16 de Junio</span>
@@ -200,6 +208,7 @@
             </div>
         </div>
 
+        <!-- Partido 3 -->
         <div class="partido-box">
             <div class="partido-header">
                 <span>Martes 16 de Junio</span>
@@ -218,6 +227,7 @@
             </div>
         </div>
 
+        <!-- Partido 4 -->
         <div class="partido-box">
             <div class="partido-header">
                 <span>Martes 16 de Junio</span>
@@ -238,8 +248,10 @@
 
     </div>
 
+    <!-- Contenedor del reproductor de YouTube -->
     <div id="player"></div>
     
+    <!-- Audio de Fondo -->
     <audio id="background-audio" loop muted>
         <source src="Audio de WhatsApp 2025-10-24 a las 08.54.34_85515f02.mp3" type="audio/mpeg">
         Tu navegador no soporta el elemento de audio.
@@ -312,4 +324,4 @@
     </script>
 
 </body>
-</html>
+</html> 
