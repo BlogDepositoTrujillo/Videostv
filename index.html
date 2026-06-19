@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reproducción Secuencial - Columna Derecha Gigante</title>
+    <style>
+        /* Estilos base para ocupar toda la pantalla */
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: black;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #player {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Oculta el elemento de audio */
+        #background-audio {
+            display: none; 
+        }
+
+        /* === CONTENEDOR VERTICAL GIGANTE AL LADO DERECHO === */
+        .trujillo-partidos-widget {
+            position: absolute;
+            top: 3%; /* Ajuste mínimo superior para maximizar el alto */
+            right: 2%; /* Fijado al lado derecho de la pantalla */
+            width: 520px; /* ENTRADA MÁXIMA DE ANCHO GIGANTE */
+            height: 94%; /* Aprovecha casi el 100% de la altura de la pantalla */
+            z-index: 50; 
+            display: flex;
+            flex-direction: column; 
+            flex-wrap: nowrap;
+            justify-content: space-between; /* Distribución equidistante perfecta */
+            gap: 16px; 
+            pointer-events: auto;
+            box-sizing: border-box;
+        }
+
+        /* --- TARJETAS GIGANTES CON COLOR DE FONDO SÓLIDO --- */
+        .partido-box {
+            background: #003b8e; /* Azul sólido institucional sin transparencias */
+            border-left: 10px solid #f20018; /* Línea roja de detalle bien imponente */
+            border-top: 1px solid rgba(255, 255, 255, 0.25); 
+            border-right: 1px solid rgba(255, 255, 255, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 20px 24px; /* Mayor espacio de respiración interna */
+            color: white;
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: -8px 8px 30px rgba(0, 0, 0, 0.85); /* Sombra pesada de TV */
+            box-sizing: border-box;
+        }
+
+        /* Encabezado con Fecha y Hora de Alta Visibilidad */
+        .partido-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px; /* Texto de tiempo muy legible */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.35); 
+            padding-bottom: 8px;
+            color: #4bb6e8; /* Celeste brillante */
+            font-weight: bold;
+        }
+
+        /* Bloque de Versus y Equipos en Formato Estadio */
+        .partido-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .team-block {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* Separación generosa de bandera y texto */
+            width: 42%;
+        }
+
+        .team-block.team-right {
+            justify-content: flex-end;
+        }
+
+        /* Banderas de los equipos en tamaño Gigante */
+        .team-logo {
+            width: 64px; /* TAMAÑO DE BANDERA XL */
+            height: 40px; 
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        /* Iniciales de los equipos masivas */
+        .team-name {
+            font-size: 32px; /* TEXTO DE EQUIPO EN TAMAÑO IMPACTANTE */
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+
+        /* Indicador de VS robusto y centrado */
+        .vs-badge {
+            background: #f20018; /* Rojo sólido */
+            font-size: 18px; /* Texto interno más grande */
+            font-weight: 900;
+            padding: 6px 18px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            flex-shrink: 0;
+        }
+
+        /* Estilos para el botón de inicio */
+        #start-button-overlay {
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.9);
+            color: white; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            font-size: 1.5em; 
+            text-align: center;
+            z-index: 100; 
+            transition: opacity 0.5s;
+            cursor: pointer;
+        }
+
+        #start-button-overlay span {
+            padding: 20px 40px;
+            border: 2px solid white;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Control responsivo para pantallas compactas */
+        @media (max-width: 1440px) {
+            .trujillo-partidos-widget { width: 440px; }
+            .team-name { font-size: 24px; }
+            .team-logo { width: 48px; height: 30px; }
+            .partido-header { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="trujillo-partidos-widget">
+        
+        <div class="partido-box">
+            <div class="partido-header">
+                <span>Viernes 19 de Junio</span>
+                <span>2:00 PM</span>
+            </div>
+            <div class="partido-teams">
+                <div class="team-block">
+                    <img class="team-logo" src="assets/img/estados-unidos.png" alt="FRA">
+                    <span class="team-name">USA</span>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="team-block team-right">
+                    <span class="team-name">AUS</span>
+                    <img class="team-logo" src="assets/img/AUTRALIA.png" alt="SEN">
+                </div>
+            </div>
+        </div>
+
+        <div class="partido-box">
+            <div class="partido-header">
+                <span>Viernes 19 de Junio</span>
+                <span>5:00 PM</span>
+            </div>
+            <div class="partido-teams">
+                <div class="team-block">
+                    <img class="team-logo" src="assets/img/Escocia.png" alt="IRQ">
+                    <span class="team-name">SCO</span>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="team-block team-right">
+                    <span class="team-name">MAR</span>
+                    <img class="team-logo" src="assets/img/MARRUECOS.png" alt="NOR">
+                </div>
+            </div>
+        </div>
+
+        <div class="partido-box">
+            <div class="partido-header">
+                <span>Viernes 19 de Junio</span>
+                <span>7:30 PM</span>
+            </div>
+            <div class="partido-teams">
+                <div class="team-block">
+                    <img class="team-logo" src="assets/img/brasil.png" alt="ARG">
+                    <span class="team-name">BRA</span>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="team-block team-right">
+                    <span class="team-name">HAI</span>
+                    <img class="team-logo" src="assets/img/haiti.png" alt="ALG">
+                </div>
+            </div>
+        </div>
+
+        <div class="partido-box">
+            <div class="partido-header">
+                <span>Viernes 19 de Junio</span>
+                <span>10:00 PM</span>
+            </div>
+            <div class="partido-teams">
+                <div class="team-block">
+                    <img class="team-logo" src="assets/img/TURQUIA.png" alt="AUT">
+                    <span class="team-name">TUR</span>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="team-block team-right">
+                    <span class="team-name">PAR</span>
+                    <img class="team-logo" src="assets/img/paraguay.png" alt="JOR">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="player"></div>
+    
+    <audio id="background-audio" loop muted>
+        <source src="Audio de WhatsApp 2025-10-24 a las 08.54.34_85515f02.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <div id="start-button-overlay" onclick="startPlayback()">
+        🔊 La Música de Fondo Requiere que Inicies la Reproducción.
+        <span>Haz Clic para Iniciar</span>
+    </div> 
+
+    <script>
+        const videoIDs = [
+            "FrmzWOvnRyQ",  /* POLLA MUNDIALISTA */
+        ];
+
+        let currentIndex = 0;
+        let player;
+        let backgroundAudio; 
+
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+
+        function onYouTubeIframeAPIReady() {
+            backgroundAudio = document.getElementById('background-audio');
+        }
+
+        function startPlayback() {
+            const startButton = document.getElementById('start-button-overlay');
+            
+            startButton.style.opacity = '0';
+            setTimeout(() => startButton.style.display = 'none', 500);
+
+            if (backgroundAudio) {
+                backgroundAudio.muted = false; 
+                backgroundAudio.volume = 0.4;  
+                backgroundAudio.play().catch(error => {
+                    console.warn("Error con el audio de fondo:", error);
+                });
+            }
+
+            player = new YT.Player('player', {
+                videoId: videoIDs[currentIndex],
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    showinfo: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    fs: 0,
+                    mute: 1, 
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                currentIndex++;
+                if (currentIndex < videoIDs.length) {
+                    player.loadVideoById(videoIDs[currentIndex]);
+                } else {
+                    currentIndex = 0; 
+                    player.loadVideoById(videoIDs[currentIndex]);
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
